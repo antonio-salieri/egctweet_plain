@@ -1,0 +1,63 @@
+<?php
+$identity = $this->zfcUserIdentity();
+?>
+<?php if(!$identity): ?>
+<div id="loginBtns">
+    <a href="#" class="show_hideReg"><img src="/img/registerHere.png" alt="Register" /></a>
+    <a href="#;" class="show_hide"><img src="/img/login.png" alt="Login" /></a>
+</div>
+<script type="text/javascript">
+    $('#loginBtns .show_hide').click(function(){
+	$('#RegForm').slideUp();
+	$('#loginForm').slideToggle();
+    });
+    $('#loginBtns .show_hideReg').click(function(){
+	$('#loginForm').slideUp();
+	$('#RegForm').slideToggle();
+    });
+</script>
+<?php else: ?>
+<div id="userBtns">
+    <a href="/user"><img src="/img/myaccount.png" alt="My Account" /></a>
+    <a href="/profile"><img src="/img/myWeb.png" alt="My Web" /></a>
+    <a href="/user/logout"><img src="/img/logout.png" alt="Logout" /></a>
+</div>
+<?php endif; ?>
+
+   <!-- Registration Form -->
+
+   <div id="RegForm" class="slidingDivReg">
+	  <form method="post" action="/user/register" >
+	  <div id="inputs">
+		  <input type="text" name="username" placeholder="Choose Username" />
+		  <input type="password" name="password"  placeholder="Choose Password" />
+		  <input type="password" name="passwordVerify"  placeholder="Repeat Password" />
+		  <input type="text" name="email" placeholder="Enter Email" />
+	  </div>
+
+	  <input type="submit" name="register"  value=""/>
+	 </form>
+   </div>
+
+   <!-- end of RegForm -->
+
+   <!-- Login Form -->
+
+   <div id="loginForm" class="slidingDiv">
+
+	  <form method="post" action="/user/login" >
+	  <div id="inputs">
+		<span id="sprytextfield1">
+			<input type="text" name="identity" placeholder="Username..." />
+			<span class="textfieldRequiredMsg">!</span>
+		</span>
+		<span id="sprytextfield2">
+	  <input type="password" id="password" name="credential" placeholder="Password..." />
+	  <span class="textfieldRequiredMsg">!</span></span>
+	  </div><!--end of inputs -->
+
+	  <input type="submit" name="login"  value=""/>
+	  </form>
+   </div>
+
+   <!-- end of loginForm -->

@@ -1,0 +1,8 @@
+{
+  "name" : "antonio-salieri/egctweet_plain",
+  "version" : "1.0.0",
+  "repositories" : [ {
+    "type" : "composer",
+    "url" : "https://packagist.org/"
+  } ]
+}
