@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<title>Parsed Cloud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="/css/bootstrap.min.css" media="screen" rel="stylesheet"
+	type="text/css">
+<link href="/css/bootstrap-theme.min.css" media="screen"
+	rel="stylesheet" type="text/css">
+<link href="/css/reset.css" media="screen" rel="stylesheet"
+	type="text/css">
+<link href="/css/main.css" media="screen" rel="stylesheet"
+	type="text/css">
+<link href="/css/typeahead.css" media="screen" rel="stylesheet"
+	type="text/css">
+<link href="/css/twitter_feed.css" media="screen" rel="stylesheet"
+	type="text/css">
+<link href="/img/favicon.ico" rel="shortcut icon"
+	type="image/vnd.microsoft.icon">
+<!--[if lt IE 9]><script type="text/javascript" src="/js/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script type="text/javascript" src="/js/respond.min.js"></script><![endif]-->
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/twitter_feed.js"></script>
+<script type="text/javascript" src="/js/typeahead.bundle.min.js"></script>
+<script type="text/javascript" src="/js/handlebars.js"></script>
+</head>
+
+
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<div id="logo">
+				<a href="/"><img src="/img/logo.jpg" alt="Logo tekst" /></a>
+			</div>
+			<!-- end of logo -->
+			<div id="navigation">
+			<?= self::partial('user_ctl.phtml'); ?>
+		  </div>
+			<!-- end of navigation -->
+			<div id="share">
+				<div id="btns">
+					<a href="#" target="_blank"><img src="/img/twitter.png"
+						alt="Twitter" /></a> <a href="#" target="_blank"><img
+						src="/img/flickr.png" alt="Flickr" /></a> <a href="#"
+						target="_blank"><img src="/img/facebook.png" alt="Facebook share" /></a>
+					<a href="#" target="_blank"><img src="/img/linkedin.png"
+						alt="Linkedin share" /></a> <a href="#" target="_blank"><img
+						src="/img/rss.png" alt="Rss" /></a>
+				</div>
+			</div>
+			<!-- end of share -->
+		</div>
+		<!-- end of header -->
+		<div id="mainBody">
+			<div id="sideNav">
+				<a href="/"><img src="/img/twit_selected.png" alt="Twitter" /></a> <img
+					src="/img/rss_normal.png" alt="Twitter" /> <img
+					src="/img/bookmarks_normal.png" alt="Twitter" /> <img
+					src="/img/places_normal.png" alt="Twitter" />
+			</div>
+			<!--end of sideNav -->
+			<div id="banners">
+				<div id="add1">
+					<img src="/img/banner1.jpg" width="468" height="60" />
+				</div>
+				<div id="add2">
+					<img src="/img/banner2.jpg" width="468" height="60" />
+				</div>
+			</div>
+			<div id="content">
+			    <?= self::$_content; ?>
+			</div>
+		</div>
+		<!-- end of mainBody -->
+		<div id="footer">
+			<div id="copyright">
+				<h4>All rights reserved</h4>
+			</div>
+			<!-- end of copyright -->
+		</div>
+		<!-- end of footer -->
+	</div>
+	<!-- end of wrapper -->
+</body>
+</html>

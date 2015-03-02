@@ -1,28 +1,24 @@
-<?php
-$this->headScript() ->appendFile('/js/typeahead.bundle.min.js', 'text/javascript')
-                    ->appendFile('/js/handlebars.js', 'text/javascript');
-$this->headLink()->appendStylesheet($this->basePath() . '/css/typeahead.css');
-
-// $this->headScript()
-//     ->appendFile('/js/bloodhound.min.js', 'text/javascript')
-//     ->appendFile('/js/bootstrap3-typeahead.min.js', 'text/javascript');
-
-$form = $this->form;
-$form->prepare();
-$form->setAttribute('action', $this->url('egc-tweet', array(
-    'controller' => 'profile',
-    'action' => 'save'
-)));
-$form->setAttribute('method', 'post');
-?>
-
-<?php echo $this->form()->openTag($form)?>
-
-<?php echo $this->formCollection($form->get(EgcTweet\Form\ProfileForm::FOLLOWINGS_FIELDSET_NAME));?>
-<?php echo $this->formButton($form->get('submit'))?>
-
-<?php echo $this->form()->closeTag()?>
-
+<form action="/profile/save" method="post" name="user_profile">
+	<fieldset>
+		<legend>Please enter names of person/thing to follow</legend>
+		<?php foreach ($this->followings as $id => $following): ?>
+		<fieldset>
+			<label><span>Follow</span>
+			<input type="text"
+				name="followings[<?= $id ?>][followingName]"
+				placeholder="Type name here" autocomplete="off" class="form-control"
+				data-provide="typeahead" value="<?= $following['followingName'] ?>"></label>
+			<input type="hidden" name="followings[<?= $id ?>][followingId]"
+				value="<?= $following['followingId'] ?>">
+			<input type="hidden" name="followings[<?= $id ?>][id]"
+				value="<?= $following['id'] ?>">
+			<input type="hidden" name="followings[<?= $id ?>][userId]"
+				value="<?= $following['userId'] ?>">
+		</fieldset>
+		<?php endforeach; ?>
+	</fieldset>
+	<button type="submit" name="submit" class="btn btn-primary" value="">Save</button>
+</form>
 <script type="text/javascript">
 
 jQuery(function() {
@@ -33,7 +29,7 @@ jQuery(function() {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         limit: 10,
         remote: {
-            url: '/twitter/users/%QUERY.json',
+            url: '/twitter/users?q=%QUERY',
             filter: function (response) {
                 return $.map(response.items, function (item) {
                     return {
@@ -63,7 +59,6 @@ jQuery(function() {
             	'Unable find any user that match the current query.',
             	'</div>'
         	].join('\n'),
-//         	suggestion: Handlebars.compile('<div style="margin:0; padding:2px;clear:both;"><img style="padding:4px;float:left;position:left;" src="{{profile_image_url}}"/><span style="float:left;position: relative; ">{{name}}</span> <span style="float: right; font-weight: normal !important; position: relative; font-size:10px;top: 30px;">@{{screen_name}}</span></div>')
         	suggestion: Handlebars.compile(
                 ['<div class="typeahead-item typeahead-account-item js-selectable" style="overflow: hidden;">',
                 '<p class="js-nav has-social-context" role="option">',
@@ -75,9 +70,6 @@ jQuery(function() {
                 '</p>',
             '</div>'].join(''))
     	},
-//         displayKey: function (item) {
-//             return item.display_name;
-//         },
     }).on('typeahead:selected', function (obj, datum) {
         var following_name_element_name = obj.target.name,
         following_fieldset_group_name = following_name_element_name.match(/followings\[\d+\]/),

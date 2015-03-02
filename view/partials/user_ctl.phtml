@@ -1,7 +1,9 @@
 <?php
-$identity = $this->zfcUserIdentity();
+use Egc\Auth\Identity;
+
+$is_auth = Identity::isAuthenticated();
 ?>
-<?php if(!$identity): ?>
+<?php if(!$is_auth): ?>
 <div id="loginBtns">
     <a href="#" class="show_hideReg"><img src="/img/registerHere.png" alt="Register" /></a>
     <a href="#;" class="show_hide"><img src="/img/login.png" alt="Login" /></a>
