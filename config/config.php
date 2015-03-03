@@ -1,7 +1,8 @@
 <?php
 return array (
-    'pdo_mysql' => array(
-        'dsn' => 'mysql:localhost;dbname=egctweet',
+    'db' => array(
+        'driver' => 'pdo_mysql',
+        'dsn' => 'mysql:host=localhost;dbname=egctweet',
         'username' => 'egctweet',
         'passwd' => 'egctweet',
         'options' => array()
@@ -9,7 +10,8 @@ return array (
 
     'controller_map' => array(
         'index' => 'Application\Controller\IndexController',
-        'profile' => 'Application\Controller\ProfileController',
+        'user' => 'Application\Controller\UserController',
+        'followings' => 'Application\Controller\FollowingsController',
         'twitter' => 'Application\Controller\TwitterController',
         'error' => 'Application\Controller\ErrorController',
     ),
@@ -17,6 +19,23 @@ return array (
     'auth_setup' => array(
         'table_name' => 'user',
         'identity_field' => 'username',
-        'password_field' => 'password'
+        'password_field' => 'password',
+        'identity_id_field' => 'id',
+    ),
+
+    'egc_tweet' => array(
+        'access_token' => array(
+            'token' => '400943385-NidLvjFoY0SP4qtTUF09Z5fNB6jBVNdP8q4017no',
+            'secret' => 'RqBc2FRAjTzlHJxYHwx3L4lv0Bo8vJohN0qSlOar9V7Sh'
+        ),
+        'oauth_options' => array(
+            'consumerKey' => 'FHBw2qIMuCPQKEsx6dGwnjG9c',
+            'consumerSecret' => 'QR8nqmENdOf7LHq8liKMVJ749reTQ5pa8pCDmNbj9YMatDObP8'
+        ),
+        'http_client_options' => array(
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false
+        )
     )
+
 );

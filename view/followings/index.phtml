@@ -1,21 +1,30 @@
-<form action="/profile/save" method="post" name="user_profile">
+<form action="/followings/save" method="post" name="user_profile">
 	<fieldset>
 		<legend>Please enter names of person/thing to follow</legend>
-		<?php foreach ($this->followings as $id => $following): ?>
+		<?php for ($id = 0; $id < $this->followings_max_count; $id++): ?>
+		<?php
+		if (isset($this->followings[$id]) &&
+		    $this->followings[$id] instanceof Application\Model\Following)
+		{
+		    $following = $this->followings[$id];
+		} else {
+		    $following = new Application\Model\Following();
+		}
+		?>
 		<fieldset>
 			<label><span>Follow</span>
 			<input type="text"
 				name="followings[<?= $id ?>][followingName]"
 				placeholder="Type name here" autocomplete="off" class="form-control"
-				data-provide="typeahead" value="<?= $following['followingName'] ?>"></label>
+				data-provide="typeahead" value="<?= $following->getFollowingName() ?>"></label>
 			<input type="hidden" name="followings[<?= $id ?>][followingId]"
-				value="<?= $following['followingId'] ?>">
+				value="<?= $following->getFollowingId() ?>">
 			<input type="hidden" name="followings[<?= $id ?>][id]"
-				value="<?= $following['id'] ?>">
+				value="<?= $following->getId() ?>">
 			<input type="hidden" name="followings[<?= $id ?>][userId]"
-				value="<?= $following['userId'] ?>">
+				value="<?= $following->getUserId() ?>">
 		</fieldset>
-		<?php endforeach; ?>
+		<?php endfor; ?>
 	</fieldset>
 	<button type="submit" name="submit" class="btn btn-primary" value="">Save</button>
 </form>

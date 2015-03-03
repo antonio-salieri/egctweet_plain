@@ -1,16 +1,21 @@
 <?php
-namespace EgcTweet\Entity;
+namespace Application\Model;
 
 abstract class Base
 {
+    public function __construct(array $data = array())
+    {
+        if (!empty($data))
+            $this->exchangeArray($data);
+    }
 
     public function __call($method, $args)
     {
-        if (! preg_match('/(?P<accessor>set|get)(?P<property>[A-Z][a-zA-Z0-9]*)/', $method, $match) || 
+        if (! preg_match('/(?P<accessor>set|get)(?P<property>[A-Z][a-zA-Z0-9]*)/', $method, $match) ||
             ! property_exists(get_class($this), $match['property'] = lcfirst($match['property']))) {
             throw new \Exception(sprintf("'%s' does not exist in '%s'.", $method, __CLASS__));
         }
-        
+
         switch ($match['accessor']) {
             case 'get':
                 return $this->{$match['property']};
@@ -22,7 +27,7 @@ abstract class Base
                 return $this;
         }
     }
-    
+
     public function exchangeArray(array $data)
     {
         foreach (array_keys(get_object_vars($this)) as $prop_name)
@@ -34,7 +39,7 @@ abstract class Base
             }
         }
     }
-    
+
     public function getData()
     {
         return get_object_vars($this);

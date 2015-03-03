@@ -1,0 +1,28 @@
+<h1>Sign In</h1>
+<form action="/user/login" method="post">
+	<dl class="zend_form">
+		<ul>
+			<li><?= $this->flash ?></li>
+		</ul>
+		<dt>
+			<label for="username">Username</label>
+		</dt>
+		<dd>
+			<input name="username" type="text" class="form-control" value="" autocomplete="off">
+		</dd>
+
+		<dt>
+			<label for="password">Password</label>
+		</dt>
+		<dd>
+			<input type="password" name="password" class="form-control" value="" autocomplete="off">
+		</dd>
+
+
+		<dd>
+			<button type="submit" name="submit" class="btn&#x20;btn-primary"
+				value="">Sign In</button>
+		</dd>
+	</dl>
+
+</form>

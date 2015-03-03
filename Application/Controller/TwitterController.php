@@ -1,7 +1,10 @@
 <?php
 namespace Application\Controller;
 
-class TwitterController extends AbstractActionController
+use Egc\Mvc\View\JsonModel;
+use Egc\Service\Twitter\Twitter;
+use Egc\Mvc\Application;
+class TwitterController extends AbstractController
 {
 
     const STATUS_OK = 'OK';
@@ -19,25 +22,23 @@ class TwitterController extends AbstractActionController
 
 	protected $enable_non_xhr_requests = true;
 
+	public function testAction()
+	{
+	    $config = Application::getConfig();
+	    $ts = new Twitter($config['egc_tweet']);
+	    var_dump($ts->usersSearch('unclebobmartin'));die;
+	}
+
     protected function getViewModel()
     {
-//     	/* @var $request Request */
-//     	$request = $this->getRequest();
-//     	if ($request->isXmlHttpRequest() || $this->enable_non_xhr_requests)
-//     	{
-//     		$model = new JsonModel();
-//     	}
-//     	else
-//     		$model = $this->createHttpNotFoundModel($this->getResponse());
-
-//     	return $model;
+		return new JsonModel();
     }
 
     protected function prepareViewModel(TwitterResponse $apiResponse)
     {
-//     	$view = $this->getViewModel();
+    	$view = $this->getViewModel();
 
-//     	$view->setVariable(self::VIEW_VAR_STATUS, self::STATUS_OK);
+    	$view->set(self::VIEW_VAR_STATUS, self::STATUS_OK);
 //     	if($apiResponse->isError())
 //     	{
 //     	    $view->setVariable(self::VIEW_VAR_STATUS, self::STATUS_REQUEST_ERROR);

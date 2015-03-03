@@ -21,7 +21,7 @@ $is_auth = Identity::isAuthenticated();
 <?php else: ?>
 <div id="userBtns">
     <a href="/user"><img src="/img/myaccount.png" alt="My Account" /></a>
-    <a href="/profile"><img src="/img/myWeb.png" alt="My Web" /></a>
+    <a href="/followings"><img src="/img/myWeb.png" alt="My Web" /></a>
     <a href="/user/logout"><img src="/img/logout.png" alt="Logout" /></a>
 </div>
 <?php endif; ?>
@@ -29,7 +29,7 @@ $is_auth = Identity::isAuthenticated();
    <!-- Registration Form -->
 
    <div id="RegForm" class="slidingDivReg">
-	  <form method="post" action="/user/register" >
+	  <form method="post" action="#" >
 	  <div id="inputs">
 		  <input type="text" name="username" placeholder="Choose Username" />
 		  <input type="password" name="password"  placeholder="Choose Password" />
@@ -50,11 +50,11 @@ $is_auth = Identity::isAuthenticated();
 	  <form method="post" action="/user/login" >
 	  <div id="inputs">
 		<span id="sprytextfield1">
-			<input type="text" name="identity" placeholder="Username..." />
+			<input type="text" name="username" placeholder="Username..." />
 			<span class="textfieldRequiredMsg">!</span>
 		</span>
 		<span id="sprytextfield2">
-	  <input type="password" id="password" name="credential" placeholder="Password..." />
+	  <input type="password" id="password" name="password" placeholder="Password..." />
 	  <span class="textfieldRequiredMsg">!</span></span>
 	  </div><!--end of inputs -->
 

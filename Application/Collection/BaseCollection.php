@@ -1,5 +1,5 @@
 <?php
-namespace EgcTweet\Collection;
+namespace Application\Collection;
 
 abstract class BaseCollection extends \ArrayIterator
 {
@@ -7,12 +7,12 @@ abstract class BaseCollection extends \ArrayIterator
     {
         $this->_populateItems($items);
     }
-    
+
     public function add($item)
     {
         $this->append($item);
     }
-    
+
     protected function _populateItems(array $items)
     {
         foreach ($items as $item)
@@ -20,5 +20,5 @@ abstract class BaseCollection extends \ArrayIterator
             $this->add($item);
         }
     }
-    
+
 }

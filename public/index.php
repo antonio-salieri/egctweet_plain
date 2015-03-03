@@ -9,12 +9,12 @@ define("LAYOUT_PATH", ROOT_PATH . 'view/layout/layout.phtml');
 require ROOT_PATH . 'init_autoloader.php';
 
 session_start();
-$identity = $_SESSION;
 
 $config = array();
 $config_file = ROOT_PATH . 'config/config.php';
 if (file_exists($config_file))
     $config = require $config_file;
 
-Application::init($config, $identity);
+Application::init($config);
+Application::route();
 Application::render();

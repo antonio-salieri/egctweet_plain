@@ -1,42 +1,50 @@
 <?php
-
 namespace Egc\Mvc;
 
-class Controller {
+use Application\Controller\ErrorController;
+class Controller
+{
+    const ACTION_NAME_POSTFIX = 'Action';
 
-	public function loadModel($name)
-	{
-		require(APP_DIR .'models/'. strtolower($name) .'.php');
+    public function redirect($loc)
+    {
+        header('Location: http://' . $_SERVER['HTTP_HOST'] . $loc);
+    }
 
-		$model = new $name;
-		return $model;
-	}
+    public function dispatch($action, $params = array())
+    {
+        /* @var $result View */
+        $result = null;
 
-	public function loadView($name)
-	{
-		$view = new View($name);
-		return $view;
-	}
+        $config = Application::getConfig();
+        if (substr($action, -(strlen(self::ACTION_NAME_POSTFIX))) !== self::ACTION_NAME_POSTFIX) {
+            $action .= self::ACTION_NAME_POSTFIX;
+        }
 
-	public function loadPlugin($name)
-	{
-		require(APP_DIR .'plugins/'. strtolower($name) .'.php');
-	}
+        if (! method_exists($this, $action)) {
+            $action = $config['defaults']['notfound_action'];
 
-	public function loadHelper($name)
-	{
-		require(APP_DIR .'helpers/'. strtolower($name) .'.php');
-		$helper = new $name;
-		return $helper;
-	}
+            $result = $this->_getErrorController()->$action();
+        } else {
+            try {
+                $result = $this->$action($params);
+            } catch (\Exception $e) {
+                error_log($e->getMessage());
+                error_log($e->getTraceAsString());
+                $result = $this->_getErrorController()->indexAction();
+            }
+        }
 
-	public function redirect($loc)
-	{
-		global $config;
+        return $result;
+    }
 
-		header('Location: '. $config['base_url'] . $loc);
-	}
-
+    /**
+     *
+     * @return Controller
+     */
+    protected function _getErrorController()
+    {
+        $config = Application::getConfig();
+        return new $config['defaults']['error_controller']();
+    }
 }
-
-?>

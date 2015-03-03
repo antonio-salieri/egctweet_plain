@@ -1,8 +1,8 @@
 <?php
-namespace EgcTweet\Collection;
+namespace Application\Collection;
 
-use EgcTweet\Collection\BaseCollection;
-use EgcTweet\Entity\Following;
+use Application\Collection\BaseCollection;
+use Application\Model\Following;
 
 class FollowingCollection extends BaseCollection
 {

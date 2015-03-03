@@ -1,15 +1,9 @@
-<?php
-$this->headScript() ->appendFile('/js/twitter_feed.js', 'text/javascript');
-$this->headLink()->appendStylesheet($this->basePath() . '/css/twitter_feed.css');
-?>
-
 <!-- Feeds -->
 <div id="feeds">
 
 <?php
 /* @var $following EgcTweet\Entity\Following */
 foreach($this->followings as $key => $following):
-if ($key > 2) break; // Show only three feeds
 ?>
 
 <div id="twitter-feed-<?= $key ?>"></div>

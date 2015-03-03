@@ -1,5 +1,5 @@
 <?php
-namespace EgcTweet\Entity;
+namespace Application\Model;
 
 class Following extends Base
 {
@@ -18,7 +18,7 @@ class Following extends Base
      * @var string Twitter display name which is followed
      */
     protected $followingName;
-    
+
     /**
      * @var int Id on Twitter for display name which is followed
      */
