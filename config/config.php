@@ -36,8 +36,8 @@ return array (
             'secret' => 'RqBc2FRAjTzlHJxYHwx3L4lv0Bo8vJohN0qSlOar9V7Sh'
         ),
         'oauth_options' => array(
-            'consumerKey' => 'FHBw2qIMuCPQKEsx6dGwnjG9c',
-            'consumerSecret' => 'QR8nqmENdOf7LHq8liKMVJ749reTQ5pa8pCDmNbj9YMatDObP8'
+            'consumerKey' => 'F8r0UeWFSHsy6wfZE7xylb6Va',
+            'consumerSecret' => 'HwnUmmxhCvVH4MsWyT8RNSwzBmjf4ntgpPO2p6MmmBjjdZNuwd'
         ),
         'http_client_options' => array(
             CURLOPT_SSL_VERIFYHOST => false,
