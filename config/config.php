@@ -24,7 +24,7 @@ return array (
     ),
 
     'auth_setup' => array(
-        'table_name' => 'user',
+        'table_name' => 'users',
         'identity_field' => 'username',
         'password_field' => 'password',
         'identity_id_field' => 'id',

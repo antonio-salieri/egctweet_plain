@@ -7,7 +7,7 @@ use Application\Collection\FollowingCollection;
 class FollowingTable
 {
 
-    const TABLE_NAME = 'following';
+    const TABLE_NAME = 'followings';
 
     /**
      * @var PDO
@@ -73,8 +73,8 @@ class FollowingTable
         $data = $following->getData();
         if ($id == 0) {
             $query = sprintf("
-                INSERT INTO `%s`
-                (`userId`, `followingName`, `followingId`)
+                INSERT INTO %s
+                (userId, followingName, followingId)
                 VALUES (:user_id, :following_name, :following_id)", self::TABLE_NAME);
             $stmt = $this->dbAdapter->prepare($query);
             $stmt->bindValue(':user_id', $data['userId'], \PDO::PARAM_INT);
@@ -84,7 +84,7 @@ class FollowingTable
         } else {
             if ($this->getUserFollowing($id, $user_id)) {
                 $query = sprintf("
-                UPDATE `%s`
+                UPDATE %s
                 SET userId = :user_id,
                     followingName = :following_name,
                     followingId = :following_id
@@ -105,7 +105,7 @@ class FollowingTable
     {
 
         $query = sprintf("
-                DELETE FROM `%s`
+                DELETE FROM %s
                 WHERE id = :id AND userId = :user_id", self::TABLE_NAME);
 
         $stmt = $this->dbAdapter->prepare($query);
