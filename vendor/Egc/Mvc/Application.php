@@ -86,6 +86,11 @@ final class Application
                     $action = self::$_config['defaults'][Controller::CONFIG_KEY_NOTFOUND_ACTION_NAME];
                 }
             }
+            else
+            {
+                $controller_class = self::$_config['defaults'][Controller::CONFIG_KEY_ERROR_CONTROLLER_NAME];
+                $action = self::$_config['defaults'][Controller::CONFIG_KEY_NOTFOUND_ACTION_NAME];
+            }
         }
 
         if (isset($segments[1]) && $segments[1] != '')

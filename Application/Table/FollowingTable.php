@@ -109,7 +109,7 @@ class FollowingTable
                 WHERE id = :id AND userId = :user_id", self::TABLE_NAME);
 
         $stmt = $this->dbAdapter->prepare($query);
-        $stmt->bindValue(':user_id', $data['userId'], \PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
     }

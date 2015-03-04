@@ -90,7 +90,7 @@ class Response
             $jsonBody = json_decode($this->httpResponse->getContent());
             $this->jsonBody = $jsonBody;
         } catch (Exception $e) {
-            throw new Exception(sprintf(
+            throw new \Exception(sprintf(
                 'Unable to decode response from twitter: %s',
                 $e->getMessage()
             ));
@@ -111,7 +111,7 @@ class Response
         $regex   = '/^HTTP\/(?P<version>1\.[01]) (?P<status>\d{3})(?:[ ]+(?P<reason>.*))?$/';
         $matches = array();
         if (!preg_match($regex, $firstLine, $matches)) {
-            throw new Exception\InvalidArgumentException(
+            throw new \Exception(
                 'A valid response status line was not found in the provided string'
             );
         }

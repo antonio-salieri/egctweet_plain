@@ -169,7 +169,7 @@ class Twitter
 
         $len = iconv_strlen($query, 'UTF-8');
         if (0 == $len) {
-            throw new Exception\InvalidArgumentException('Query must contain at least one character');
+            throw new \Exception('Query must contain at least one character');
         }
 
         $params = array(
@@ -180,7 +180,7 @@ class Twitter
                 case 'count':
                     $value = (int) $value;
                     if (1 > $value || 20 < $value) {
-                        throw new Exception\InvalidArgumentException('count must be between 1 and 20');
+                        throw new \Exception('count must be between 1 and 20');
                     }
                     $params['count'] = $value;
                     break;
@@ -224,7 +224,7 @@ class Twitter
     protected function validateScreenName($name)
     {
         if (! preg_match('/^[a-zA-Z0-9_]{0,20}$/', $name)) {
-            throw new Exception\InvalidArgumentException('Screen name, "' . $name . '" should only contain alphanumeric characters and' . ' underscores, and not exceed 15 characters.');
+            throw new \Exception('Screen name, "' . $name . '" should only contain alphanumeric characters and' . ' underscores, and not exceed 15 characters.');
         }
         return $name;
     }

@@ -38,7 +38,7 @@ var EgcTweetSpinner = function(url, options) {
     }
 
     this.setHeaderHTML = function(screenname, twitterprofile) {
-    	this.headerHTML += '<a href="https://twitter.com/" target="_blank"><img src="img/twitter-bird-light.png" width="34" style="float:left;padding:3px 12px 0px 6px" alt="twitter bird" /></a>';
+    	this.headerHTML += '<a href="https://twitter.com/" target="_blank"><img src="/img/twitter-bird-light.png" width="34" style="float:left;padding:3px 12px 0px 6px" alt="twitter bird" /></a>';
         this.headerHTML += '<h1>' + screenname + ' <span style="font-size:13px">';
         if (this.twitterprofile)
             this.headerHTML += '<a href="https://twitter.com/' + twitterprofile + '" target="_blank">@' + twitterprofile + '</a></span></h1>';

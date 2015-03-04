@@ -12,15 +12,16 @@
 		}
 		?>
 		<fieldset>
-			<label><span>Follow</span>
-			<input type="text"
+			<label><span>Follow</span> <input type="text"
 				name="followings[<?= $id ?>][followingName]"
 				placeholder="Type name here" autocomplete="off" class="form-control"
-				data-provide="typeahead" value="<?= $following->getFollowingName() ?>"></label>
-			<input type="hidden" name="followings[<?= $id ?>][followingId]"
-				value="<?= $following->getFollowingId() ?>">
-			<input type="hidden" name="followings[<?= $id ?>][id]"
-				value="<?= $following->getId() ?>">
+				data-provide="typeahead"
+				value="<?= $following->getFollowingName() ?>"> <img
+				class="typeahead_indicator" style="display: none"
+				src="/img/small-loader.gif" /> </label> <input type="hidden"
+				name="followings[<?= $id ?>][followingId]"
+				value="<?= $following->getFollowingId() ?>"> <input type="hidden"
+				name="followings[<?= $id ?>][id]" value="<?= $following->getId() ?>">
 			<input type="hidden" name="followings[<?= $id ?>][userId]"
 				value="<?= $following->getUserId() ?>">
 		</fieldset>
@@ -36,10 +37,12 @@ jQuery(function() {
             return Bloodhound.tokenizers.whitespace(datum.display_name);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        limit: 10,
+        limit: 30,
         remote: {
             url: '/twitter/users/data/%QUERY',
             filter: function (response) {
+                console.log(arguments);
+//             	hideSpinner();
                 return $.map(response.items, function (item) {
                     return {
                         id: item.id,
@@ -48,6 +51,10 @@ jQuery(function() {
                         profile_image_url: item.profile_image_url
                     };
                 });
+            },
+            beforeSend: function(xhr){
+            	console.log(arguments);
+//                 showSpinner();
             }
         }
     });
@@ -86,6 +93,6 @@ jQuery(function() {
         following_id_element = $('[name="'+following_id_element_name+'"]')[0]
         if (following_id_element)
             following_id_element.value = datum.id;
-    });;
+    });
 });
 </script>

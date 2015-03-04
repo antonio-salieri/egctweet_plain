@@ -34,7 +34,7 @@ class Model
                 return $val;
             case 'set':
                 if (! $args) {
-                    throw new InvalidArgumentException(sprintf("'%s' requires an argument value.", $method));
+                    throw new Exception(sprintf("'%s' requires an argument value.", $method));
                 }
                 if (! $is_dynamic_prop) {
                     $this->{$match['property']} = $args[0];

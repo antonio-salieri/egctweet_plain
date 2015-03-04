@@ -1,9 +1,9 @@
 <?php
 namespace Egc\Mvc;
 
-use Application\Controller\ErrorController;
 use Egc\Mvc\View\ViewModel;
 use Egc\Mvc\View\LiteralViewModel;
+use Egc\Service\Twitter\Response;
 class Controller
 {
     const ACTION_NAME_POSTFIX = 'Action';
@@ -11,7 +11,7 @@ class Controller
     const CONFIG_KEY_DEFAULT_CONTROLLER_NAME = 'controller';
 
     const CONFIG_KEY_ERROR_CONTROLLER_NAME = 'error_controller';
-    const CONFIG_KEY_ERROR_ACTION_NAME = 'error_not_found_action';
+    const CONFIG_KEY_ERROR_ACTION_NAME = 'error_action';
     const CONFIG_KEY_NOTFOUND_ACTION_NAME = 'error_not_found_action';
 
     const CONFIG_KEY_CONTROLLER_MAP = 'controller_map';
@@ -77,8 +77,8 @@ class Controller
     protected function _getErrorController()
     {
         $config = Application::getConfig();
-        if(class_exists($config['defaults'][CONFIG_KEY_ERROR_CONTROLLER_NAME]))
-            $controller = new $config['defaults'][CONFIG_KEY_ERROR_CONTROLLER_NAME]();
+        if(class_exists($config['defaults'][self::CONFIG_KEY_ERROR_CONTROLLER_NAME]))
+            $controller = new $config['defaults'][self::CONFIG_KEY_ERROR_CONTROLLER_NAME]();
         else
             $controller = $this;
         return $controller;

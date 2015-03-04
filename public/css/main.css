@@ -479,3 +479,11 @@ legend {
 input.form-control {
 	width: 272px;
 }
+
+.typeahead_indicator {
+    height: 18px;
+    left: 274px;
+    position: relative;
+    top: -37px;
+    width: 18px;
+}
