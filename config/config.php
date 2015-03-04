@@ -32,7 +32,7 @@ return array (
 
     'egc_tweet' => array(
         'access_token' => array(
-            'token' => '400943385-NidLvjFoY0SP4qtTUF09Z5fNB6jBVNdP8q4017no'
+            'token' => '400943385-NidLvjFoY0SP4qtTUF09Z5fNB6jBVNdP8q4017no',
             'secret' => 'RqBc2FRAjTzlHJxYHwx3L4lv0Bo8vJohN0qSlOar9V7Sh'
         ),
         'oauth_options' => array(
