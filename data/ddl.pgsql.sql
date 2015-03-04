@@ -12,4 +12,4 @@ CREATE TABLE followings
     followingId INTEGER NOT NULL
 );
 
-INSERT INTO users (username, password) VALUES ('admin', 'admin22');
+INSERT INTO users (username, password) VALUES ('admin', MD5('admin22'));

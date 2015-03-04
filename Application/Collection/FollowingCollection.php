@@ -6,8 +6,11 @@ use Application\Model\Following;
 
 class FollowingCollection extends BaseCollection
 {
-    public function add(Following $item)
+    public function add($item)
     {
+        if (!$item instanceof Following)
+            throw new \Exception("Trying to add invalid item.");
+
         parent::add($item);
     }
 
