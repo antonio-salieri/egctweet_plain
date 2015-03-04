@@ -8,10 +8,10 @@ return array (
     ),
 
     'db' => array(
-        'driver' => 'pdo_mysql',
-        'dsn' => 'mysql:host=localhost;dbname=egctweet',
-        'username' => 'egctweet',
-        'passwd' => 'egctweet',
+        'driver' => 'pdo_pgsql',
+        'dsn' => 'pgsql:host=ec2-50-19-236-178.compute-1.amazonaws.com;dbname=ddb1mohh5qdt7t',
+        'username' => 'cxogvztesjubuy',
+        'passwd' => 'W5-dTZ6CbmzpUvd-T3sLiIYYmg',
         'options' => array()
     ),
 
@@ -32,12 +32,12 @@ return array (
 
     'egc_tweet' => array(
         'access_token' => array(
-            'token' => '400943385-NidLvjFoY0SP4qtTUF09Z5fNB6jBVNdP8q4017no',
+            'token' => '400943385-NidLvjFoY0SP4qtTUF09Z5fNB6jBVNdP8q4017no'
             'secret' => 'RqBc2FRAjTzlHJxYHwx3L4lv0Bo8vJohN0qSlOar9V7Sh'
         ),
         'oauth_options' => array(
-            'consumerKey' => 'F8r0UeWFSHsy6wfZE7xylb6Va',
-            'consumerSecret' => 'HwnUmmxhCvVH4MsWyT8RNSwzBmjf4ntgpPO2p6MmmBjjdZNuwd'
+            'consumerKey' => 'uXRBhOaxJCgRHaJ3Ivq3gcGHO',
+            'consumerSecret' => ' RauT7uJiYYDVOKdjovbnd7hy722h38TnNodzqxDQB0sF5Wl1fD'
         ),
         'http_client_options' => array(
             CURLOPT_SSL_VERIFYHOST => false,
