@@ -26,7 +26,7 @@ class FollowingTable
 
         $collection = new FollowingCollection();
         foreach ($rowset as $row) {
-            $collection->add($row);
+            $collection->add(new Following($row));
         }
 
         return $collection;
@@ -40,7 +40,7 @@ class FollowingTable
 
         $collection = new FollowingCollection();
         foreach ($rowset as $row) {
-            $collection->add(new Following());
+            $collection->add(new Following($row));
         }
 
         return $collection;
@@ -48,8 +48,9 @@ class FollowingTable
 
     public function getUserFollowing($id, $user_id)
     {
-        $id = (int) $userId;
-        $query = sprintf("SELECT * FROM %s W1HERE userId = ? AND userId = ?;", self::TABLE_NAME);
+        $id = (int) $id;
+        $userId = (int) $user_id;
+        $query = sprintf("SELECT * FROM %s WHERE id = ? AND userId = ?;", self::TABLE_NAME);
         $rowset = $this->dbAdapter->prepareExecuteAndFetch($query, array($id, $userId));
 
         $following = null;
@@ -82,9 +83,6 @@ class FollowingTable
             $stmt->execute();
         } else {
             if ($this->getUserFollowing($id, $user_id)) {
-                $this->dbAdapter->update($data, array(
-                    'id' => (int)$id
-                ));
                 $query = sprintf("
                 UPDATE `%s`
                 SET userId = :user_id,

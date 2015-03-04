@@ -2,18 +2,19 @@
 namespace Application\Controller;
 
 use Egc\Mvc\View\ViewModel;
+use Egc\Service\Twitter\Response;
 class ErrorController extends AbstractController
 {
 
     public function indexAction()
     {
-        http_response_code(500);
+        $this->setResponseCode(Response::STATUS_CODE_500);
         return new ViewModel('error/index.phtml');
     }
 
     public function notfoundAction()
     {
-        http_response_code(404);
+        $this->setResponseCode(Response::STATUS_CODE_404);
         return new ViewModel('error/notfound.phtml');
     }
 }

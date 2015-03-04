@@ -20,10 +20,11 @@ final class Application
 
     private static $_config = array(
         'defaults' => array(
-            'controller' => 'Application\Controller\IndexController',
-            'action' => 'index',
-            'error_controller' => 'Application\Controller\ErrorController',
-            'error_not_found_action' => 'notfound',
+            Controller::CONFIG_KEY_DEFAULT_CONTROLLER_NAME => 'Egc\Mvc\Controller',
+            Controller::CONFIG_KEY_DEFAULT_ACTION_NAME => 'index',
+            Controller::CONFIG_KEY_ERROR_CONTROLLER_NAME => 'Egc\Mvc\Controller',
+            Controller::CONFIG_KEY_NOTFOUND_ACTION_NAME => 'notfound',
+            Controller::CONFIG_KEY_ERROR_ACTION_NAME => 'error',
             'layout_path' => LAYOUT_PATH
         )
     );
@@ -35,14 +36,31 @@ final class Application
 
     public static function init($config = array())
     {
-        self::$_config = array_merge(self::$_config, $config);
+        self::prepareConfig($config);
         self::$_db_adapter = Factory::getAdapterInstance(self::$_config);
+    }
+
+    private static function prepareConfig(array $config = array())
+    {
+        if (isset($config['defaults']))
+        {
+            foreach ($config['defaults'] as $name => $value)
+            {
+                self::$_config['defaults'][$name] = $value;
+            }
+            unset($config['defaults']);
+
+            foreach ($config as $name => $value)
+            {
+                self::$_config[$name] = $value;
+            }
+        }
     }
 
     public static function route()
     {
-        $controller_class = self::$_config['defaults']['controller'];
-        $action = self::$_config['defaults']['action'];
+        $controller_class = self::$_config['defaults'][Controller::CONFIG_KEY_DEFAULT_CONTROLLER_NAME];
+        $action = self::$_config['defaults'][Controller::CONFIG_KEY_DEFAULT_ACTION_NAME];
         $url = '';
 
         $request_url = '';
@@ -58,8 +76,15 @@ final class Application
         $segments = explode('/', $url);
 
         if (isset($segments[0]) && $segments[0] != '') {
-            if (isset(self::$_config['controller_map']) && isset(self::$_config['controller_map'][$segments[0]])) {
-                $controller_class = self::$_config['controller_map'][$segments[0]];
+            if (isset(self::$_config['controller_map']) &&
+                isset(self::$_config[Controller::CONFIG_KEY_CONTROLLER_MAP][$segments[0]]))
+            {
+                $controller_class = self::$_config[Controller::CONFIG_KEY_CONTROLLER_MAP][$segments[0]];
+                if (!class_exists($controller_class))
+                {
+                    $controller_class = self::$_config['defaults'][Controller::CONFIG_KEY_ERROR_CONTROLLER_NAME];
+                    $action = self::$_config['defaults'][Controller::CONFIG_KEY_NOTFOUND_ACTION_NAME];
+                }
             }
         }
 
@@ -84,7 +109,7 @@ final class Application
     public static function render()
     {
         if (self::$_skipLayoutRender) {
-            return self::$_content;
+            echo self::$_content;
         } else {
             require self::$_config['defaults']['layout_path'];
         }

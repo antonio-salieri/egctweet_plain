@@ -12,7 +12,7 @@ jQuery(function() {
 	var el = $('#twitter-feed-<?= $key ?>');
 	<?php $obj_name = "t_{$key}";?>
 	var <?= $obj_name?> = new EgcTweetSpinner(
-		'/twitter/timeline/<?= $following->getFollowingId() ?>.json', {
+		'/twitter/timeline/data/<?= $following->getFollowingId() ?>.json', {
 			twitterprofile: '<?= $following->getFollowingName() ?>',
 			element: $(el)
 		}

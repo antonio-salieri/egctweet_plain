@@ -3,6 +3,7 @@ namespace Application\Controller;
 
 use Egc\Auth\Identity;
 use Egc\Mvc\View\ViewModel;
+use Application\Collection\FollowingCollection;
 
 class FollowingsController extends AbstractController
 {
@@ -29,6 +30,7 @@ class FollowingsController extends AbstractController
         if (! Identity::isAuthenticated()) {
             return $this->redirect(UserController::ROUTE_LOGIN);
         }
+        $followingsTable = $this->getFollowingTable();
 
         $collection = new FollowingCollection($_POST[self::FOLLOWINGS_FIELDSET_NAME]);
         $user_id = Identity::getId();

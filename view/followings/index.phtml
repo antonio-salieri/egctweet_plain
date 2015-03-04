@@ -38,7 +38,7 @@ jQuery(function() {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         limit: 10,
         remote: {
-            url: '/twitter/users?q=%QUERY',
+            url: '/twitter/users/data/%QUERY',
             filter: function (response) {
                 return $.map(response.items, function (item) {
                     return {

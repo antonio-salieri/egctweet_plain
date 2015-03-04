@@ -9,7 +9,7 @@ class Identity
     const IDENTITY_FIELD_KEY = 'identity_field';
     const IDENTITY_ID_FIELD_KEY = 'identity_id_field';
 
-    const IS_LOGGEDID_KEY = 'logged_in';
+    const IS_LOGGED_KEY = 'logged_in';
     const IDENTITY_ID_KEY = 'identity_id';
 
     public static function getId()
@@ -23,7 +23,7 @@ class Identity
 
     public static function isAuthenticated()
     {
-        return (isset($_SESSION[self::IS_LOGGEDID_KEY]) && $_SESSION[self::IS_LOGGEDID_KEY]);
+        return (isset($_SESSION[self::IS_LOGGED_KEY]) && $_SESSION[self::IS_LOGGED_KEY]);
     }
 
     protected static function setAuthenticated($is_auth = true, $user_id = null)

@@ -1,8 +1,11 @@
 <?php
 namespace Application\Model;
 
-class User extends Base
+use Egc\Mvc\Model;
+
+class User extends Model
 {
+
     protected $id;
 
     protected $username;
@@ -12,5 +15,4 @@ class User extends Base
     protected $firstName;
 
     protected $lastName;
-
 }

@@ -22,9 +22,16 @@ abstract class AbstractView
         return $result;
     }
 
-    public function set($var, $val)
+    public function set($name, $value)
     {
-        $this->pageVars[$var] = $val;
+        $this->pageVars[$name] = $value;
+        return $this;
+    }
+
+    public function setVariable($name, $value)
+    {
+        $this->set($name, $value);
+        return $this;
     }
 
     protected function _getVars()

@@ -1,5 +1,12 @@
 <?php
+use Egc\Mvc\Controller;
 return array (
+    'defaults' => array(
+        Controller::CONFIG_KEY_DEFAULT_CONTROLLER_NAME => 'Application\Controller\IndexController',
+        Controller::CONFIG_KEY_ERROR_CONTROLLER_NAME => 'Application\Controller\ErrorController',
+        Controller::CONFIG_KEY_ERROR_ACTION_NAME => 'index'
+    ),
+
     'db' => array(
         'driver' => 'pdo_mysql',
         'dsn' => 'mysql:host=localhost;dbname=egctweet',
