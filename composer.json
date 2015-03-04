@@ -4,5 +4,9 @@
   "repositories" : [ {
     "type" : "composer",
     "url" : "https://packagist.org/"
-  } ]
+  } ],
+  "require": {
+    "ext-pdo_mysql": "~1.0",
+    "ext-pgsql": "0.0.0.*"
+  }
 }

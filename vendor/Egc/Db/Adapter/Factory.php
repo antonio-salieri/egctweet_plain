@@ -13,7 +13,7 @@ class Factory
      *
      * @param array $config
      * @throws \Exception
-     * @return AdapterInterface
+     * @return AdapterAbstract
      */
     public static function getAdapterInstance(array $config = array())
     {
@@ -32,11 +32,11 @@ class Factory
         $class_name = self::DRIVER_NAMESPACE;
         $class_name .= implode("", array_map(function($el){return ucfirst($el);}, explode("_", $driver)));
         if (class_exists($class_name) &&
-            in_array('Egc\Db\Adapter\AdapterInterface', class_implements($class_name)))
+            in_array('Egc\Db\Adapter\AdapterAbstract', class_parents($class_name)))
         {
             $instance = new $class_name($config[self::DB_CONFIG_KEY]);
         } else {
-            throw new \Exception("Unkznown driver type '{$driver}'");
+            throw new \Exception("Unknown driver type '{$driver}'");
         }
 
         return $instance;
