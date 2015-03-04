@@ -13,8 +13,9 @@ class Twitter
     /**
      * Base URI for all API calls
      */
-    const API_BASE_URI = 'https://api.twitter.com/1.1/';
-    const OAUTH_SIGNATURE_METHOD = 'SHA1';
+    const API_BASE_URI = 'https://api.twitter.com:443/1.1/';
+    const OAUTH_SIGNATURE_METHOD = 'HMAC-SHA1';
+    const SIGNATURE_METHOD = 'SHA1';
     const OAUTH_VERSION = '1.0';
 
     const METHOD_GET = 'GET';
@@ -380,24 +381,34 @@ class Twitter
 
         $params = $this->_assembleParams($query);
         $sig_base_string = $this->_getBaseSignatureString($params, self::METHOD_GET, self::API_BASE_URI.$path);
-        $key = "{$this->getOauthConsumerKey()}&{$this->getOauthConsumerSecret()}";
-        $binary_sig = hash_hmac(self::OAUTH_SIGNATURE_METHOD, $sig_base_string, $key);
+        $key = "{$this->getOauthConsumerSecret()}&{$this->getAccessTokenSecret()}";
+        $binary_sig = hash_hmac(self::SIGNATURE_METHOD, $sig_base_string, $key, true);
 
-        $params['oauth_signature'] = base64_encode($binary_sig);
+        $params['oauth_signature'] = $this->_urlEncode(base64_encode($binary_sig));
         $client = curl_init(self::API_BASE_URI . "{$path}?{$query_str}");
+        $header_authz = "Authorization: OAuth oauth_consumer_key=\"{$this->getOauthConsumerKey()}\", oauth_nonce=\"{$params['oauth_nonce']}\", oauth_signature=\"{$params['oauth_signature']}\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"{$params['oauth_timestamp']}\", oauth_token=\"{$this->getAccessToken()}\", oauth_version=\"".self::OAUTH_VERSION."\"";
+        $header_content_type = "Content-Type: application/x-www-form-urlencoded";
         curl_setopt_array($client, array_merge($this->getHttpClientOptions(), array(
-            CURLOPT_TIMEOUT => 8,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 60,
+            CURLOPT_USERAGENT      => 'egc_tweet/curl',
             CURLOPT_HTTPGET => true,
+            CURLOPT_VERBOSE => true,
             CURLOPT_HTTPHEADER => array(
-                "Authorization: OAuth oauth_consumer_key=\"{$this->getOauthConsumerKey()}\", oauth_nonce=\"{$params['oauth_nonce']}\", oauth_signature=\"{$params['oauth_signature']}\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"{$params['oauth_timestamp']}\", oauth_token=\"{$this->getAccessToken()}\", oauth_version=\"".self::OAUTH_VERSION."\"",
-                "Content-Type: application/x-www-form-urlencoded"
+                $header_content_type,
+                $header_authz
             )
         )));
-// var_dump($params);die;
-// var_dump("Authorization: OAuth oauth_consumer_key=\"{$this->getOauthConsumerKey()}\", oauth_nonce=\"{$params['oauth_nonce']}\", oauth_signature=\"{$params['oauth_signature']}\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"{$params['oauth_timestamp']}\", oauth_token=\"{$this->getAccessToken()}\", oauth_version=\"".self::OAUTH_VERSION."\"");die;
-//         $response = curl_exec($client);
-        var_dump(curl_exec($client));die;
+        $response = $this->_execRequest($client);
+        var_dump($response);die;
         return $response;
+    }
+
+    protected function _execRequest($client)
+    {
+//         session_write_close();
+        return curl_exec($client);
     }
 
     protected function _assembleParams($query_params = array())

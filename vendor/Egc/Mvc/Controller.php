@@ -8,6 +8,7 @@ class Controller
 
     public function redirect($loc)
     {
+        session_write_close();
         header('Location: http://' . $_SERVER['HTTP_HOST'] . $loc);
     }
 

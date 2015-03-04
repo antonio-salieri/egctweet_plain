@@ -8,7 +8,9 @@ define("LAYOUT_PATH", ROOT_PATH . 'view/layout/layout.phtml');
 // Setup autoloading
 require ROOT_PATH . 'init_autoloader.php';
 
-session_start();
+if (session_id() == '') {
+    session_start();
+}
 
 $config = array();
 $config_file = ROOT_PATH . 'config/config.php';
