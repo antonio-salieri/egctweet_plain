@@ -13,30 +13,17 @@ class Twitter
     /**
      * Base URI for all API calls
      */
-    const API_BASE_URI = 'https://api.twitter.com:443/1.1/';
+    const API_BASE_URI = 'https://api.twitter.com/1.1/';
+//     const API_BASE_URI = 'http://api.twitter.com:88/1.1/';  // local test
+
+    const UAGENT = 'EgcTweet/curl';
+
     const OAUTH_SIGNATURE_METHOD = 'HMAC-SHA1';
     const SIGNATURE_METHOD = 'SHA1';
     const OAUTH_VERSION = '1.0';
 
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
-
-    /**
-     * 246 is the current limit for a status message, 140 characters are displayed
-     * initially, with the remainder linked from the web UI or client.
-     * The limit is
-     * applied to a html encoded UTF-8 string (i.e. entities are counted in the limit
-     * which may appear unusual but is a security measure).
-     *
-     * This should be reviewed in the future...
-     */
-    const STATUS_MAX_CHARACTERS = 246;
-
-    /**
-     *
-     * @var array
-     */
-    protected $cookieJar;
 
     /**
      * Date format for 'since' strings
@@ -46,43 +33,40 @@ class Twitter
     protected $dateFormat = 'D, d M Y H:i:s T';
 
     /**
-     *
-     * @var Http\Client
-     */
-    protected $httpClient = null;
-
-    /**
-     * Current method type (for method proxying)
-     *
+     * Twitter access token
      * @var string
      */
-    protected $methodType;
-
     protected $accessToken;
 
+    /**
+     * Twitter access token secret
+     * @var string
+     */
     protected $accessTokenSecret;
 
+    /**
+     * Twitter's app OAuth consumer key
+     * @var string
+     */
     protected $oauthConsumerKey;
 
+    /**
+     * Twitter's app OAuth consumer secret
+     * @var string
+     */
     protected $oauthConsumerSecret;
 
-    protected $httpClientOptions;
-
     /**
-     * Types of API methods
-     *
+     * Additional HTTP client (curl) options
      * @var array
      */
-    protected $methodTypes = array(
-        'account',
-        'application',
-        'blocks',
-        'directmessages',
-        'favorites',
-        'friendships',
-        'search',
-        'statuses',
-        'users'
+    protected $httpClientOptions = array(
+        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 60,
+        CURLOPT_USERAGENT      => self::UAGENT,
+        CURLOPT_HEADER         => true
+//         CURLOPT_VERBOSE => 1,
     );
 
     /**
@@ -93,13 +77,6 @@ class Twitter
     protected $options = array();
 
     /**
-     * Username
-     *
-     * @var string
-     */
-    protected $username;
-
-    /**
      * Constructor
      *
      * @param null|array $options
@@ -108,9 +85,6 @@ class Twitter
     {
         $this->options = $options;
 
-        if (isset($options['username'])) {
-            $this->setUsername($options['username']);
-        }
 
         $accessToken = false;
         if (isset($options['accessToken'])) {
@@ -143,31 +117,10 @@ class Twitter
         $this->setHttpClientOptions($httpClientOptions);
     }
 
-    /**
-     * Retrieve username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $value
-     * @return self
-     */
-    public function setUsername($value)
-    {
-        $this->username = $value;
-        return $this;
-    }
-
     public function setAccessToken($token)
     {
         $this->accessToken = $token;
+        return $this;
     }
 
     public function getAccessToken()
@@ -178,6 +131,7 @@ class Twitter
     public function setAccessTokenSecret($secret)
     {
         $this->accessTokenSecret = $secret;
+        return $this;
     }
 
     public function getAccessTokenSecret()
@@ -188,6 +142,7 @@ class Twitter
     public function setOauthConsumerKey($consumer_key)
     {
         $this->oauthConsumerKey = $consumer_key;
+        return $this;
     }
 
     public function getOauthConsumerKey()
@@ -198,6 +153,7 @@ class Twitter
     public function setOauthConsumerSecret($consumer_secret)
     {
         $this->oauthConsumerSecret = $consumer_secret;
+        return $this;
     }
 
     public function getOauthConsumerSecret()
@@ -207,7 +163,12 @@ class Twitter
 
     public function setHttpClientOptions($http_client_options)
     {
-        $this->httpClientOptions = $http_client_options;
+        foreach ($http_client_options as $option => $val)
+        {
+            $this->httpClientOptions[$option] = $val;
+
+        }
+        return $this;
     }
 
     public function getHttpClientOptions()
@@ -229,8 +190,6 @@ class Twitter
      * - contributor_details: when set to true, includes screen_name of each contributor
      * - include_rts: when set to false, will strip native retweets
      *
-     * @throws Http\Client\Exception\ExceptionInterface if HTTP request fails or times out
-     * @throws Exception\DomainException if unable to decode JSON payload
      * @return Response
      */
     public function statusesUserTimeline(array $options = array())
@@ -373,42 +332,44 @@ class Twitter
      * @param array $query
      *            Array of GET parameters
      * @throws Http\Client\Exception\ExceptionInterface
-     * @return Http\Response
+     * @return Response
      */
     protected function get($path, array $query = array())
     {
         $query_str = $this->_buildQueryString($query);
 
         $params = $this->_assembleParams($query);
+
         $sig_base_string = $this->_getBaseSignatureString($params, self::METHOD_GET, self::API_BASE_URI.$path);
         $key = "{$this->getOauthConsumerSecret()}&{$this->getAccessTokenSecret()}";
         $binary_sig = hash_hmac(self::SIGNATURE_METHOD, $sig_base_string, $key, true);
 
         $params['oauth_signature'] = $this->_urlEncode(base64_encode($binary_sig));
+
         $client = curl_init(self::API_BASE_URI . "{$path}?{$query_str}");
         $header_authz = "Authorization: OAuth oauth_consumer_key=\"{$this->getOauthConsumerKey()}\", oauth_nonce=\"{$params['oauth_nonce']}\", oauth_signature=\"{$params['oauth_signature']}\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"{$params['oauth_timestamp']}\", oauth_token=\"{$this->getAccessToken()}\", oauth_version=\"".self::OAUTH_VERSION."\"";
         $header_content_type = "Content-Type: application/x-www-form-urlencoded";
-        curl_setopt_array($client, array_merge($this->getHttpClientOptions(), array(
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT        => 60,
-            CURLOPT_USERAGENT      => 'egc_tweet/curl',
+        $status = curl_setopt_array($client, $this->getHttpClientOptions() + array(
             CURLOPT_HTTPGET => true,
-            CURLOPT_VERBOSE => true,
             CURLOPT_HTTPHEADER => array(
                 $header_content_type,
                 $header_authz
             )
-        )));
+        ));
+        if (!$status)
+            throw new \Exception("Error setting client options.");
+
         $response = $this->_execRequest($client);
-        var_dump($response);die;
         return $response;
     }
 
     protected function _execRequest($client)
     {
-//         session_write_close();
-        return curl_exec($client);
+        session_write_close();
+        $result = curl_exec($client);
+        curl_close($client);
+        return $result;
+
     }
 
     protected function _assembleParams($query_params = array())

@@ -3,6 +3,7 @@ namespace Egc\Mvc;
 
 use Egc\Db\Adapter\MySql;
 use Egc\Db\Adapter\Factory;
+use Egc\Mvc\View\ViewModel;
 
 final class Application
 {
@@ -75,7 +76,7 @@ final class Application
             'params' => array_slice($segments, 2)
         )));
 
-        if (self::$_content instanceof View) {
+        if (self::$_content instanceof AbstractView) {
             self::$_content = self::$_content->render();
         }
     }
