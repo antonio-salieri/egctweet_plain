@@ -37,7 +37,7 @@ return array (
         ),
         'oauth_options' => array(
             'consumerKey' => 'uXRBhOaxJCgRHaJ3Ivq3gcGHO',
-            'consumerSecret' => ' RauT7uJiYYDVOKdjovbnd7hy722h38TnNodzqxDQB0sF5Wl1fD'
+            'consumerSecret' => 'RauT7uJiYYDVOKdjovbnd7hy722h38TnNodzqxDQB0sF5Wl1fD'
         ),
         'http_client_options' => array(
             CURLOPT_SSL_VERIFYHOST => false,
