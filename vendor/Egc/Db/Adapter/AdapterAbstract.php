@@ -29,6 +29,7 @@ abstract class AdapterAbstract extends \PDO
         return $rowset;
     }
 
+    abstract public function quoteColumnName($col_name);
 //     abstract public function exec($statement);
 //     abstract public function prepareExecuteAndFetch($query, array $params = array());
 }

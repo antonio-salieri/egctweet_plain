@@ -1,17 +1,24 @@
 <?php
 use Egc\Mvc\Controller;
-return array (
+return array(
     'defaults' => array(
         Controller::CONFIG_KEY_DEFAULT_CONTROLLER_NAME => 'Application\Controller\IndexController',
         Controller::CONFIG_KEY_ERROR_CONTROLLER_NAME => 'Application\Controller\ErrorController',
         Controller::CONFIG_KEY_ERROR_ACTION_NAME => 'index'
     ),
 
+//     'db' => array(
+//         'driver' => 'pdo_mysql',
+//         'dsn' => 'mysql:host=localhost;dbname=egctweet',
+//         'username' => 'egctweet',
+//         'passwd' => 'egctweet',
+//         'options' => array()
+//     ),
     'db' => array(
-        'driver' => 'pdo_mysql',
-        'dsn' => 'mysql:host=localhost;dbname=egctweet',
-        'username' => 'egctweet',
-        'passwd' => 'egctweet',
+        'driver' => 'pdo_pgsql',
+        'dsn' => 'pgsql:host=localhost;dbname=egctweet',
+        'username' => 'postgres',
+        'passwd' => '',
         'options' => array()
     ),
 
@@ -20,14 +27,14 @@ return array (
         'user' => 'Application\Controller\UserController',
         'followings' => 'Application\Controller\FollowingsController',
         'twitter' => 'Application\Controller\TwitterController',
-        'error' => 'Application\Controller\ErrorController',
+        'error' => 'Application\Controller\ErrorController'
     ),
 
     'auth_setup' => array(
-        'table_name' => 'user',
+        'table_name' => 'users',
         'identity_field' => 'username',
         'password_field' => 'password',
-        'identity_id_field' => 'id',
+        'identity_id_field' => 'id'
     ),
 
     'egc_tweet' => array(

@@ -7,7 +7,7 @@ use Application\Collection\FollowingCollection;
 class FollowingTable
 {
 
-    const TABLE_NAME = 'following';
+    const TABLE_NAME = 'followings';
 
     /**
      * @var PDO
@@ -35,7 +35,7 @@ class FollowingTable
     public function getUserFollowings($userId)
     {
         $id = (int) $userId;
-        $query = sprintf("SELECT * FROM %s WHERE userId = ?;", self::TABLE_NAME);
+        $query = sprintf("SELECT * FROM %s WHERE {$this->quoteColumnName('userId')} = ?;", self::TABLE_NAME);
         $rowset = $this->dbAdapter->prepareExecuteAndFetch($query, array($id));
 
         $collection = new FollowingCollection();
@@ -50,7 +50,7 @@ class FollowingTable
     {
         $id = (int) $id;
         $userId = (int) $user_id;
-        $query = sprintf("SELECT * FROM %s WHERE id = ? AND userId = ?;", self::TABLE_NAME);
+        $query = sprintf("SELECT * FROM %s WHERE {$this->quoteColumnName('id')} = ? AND {$this->quoteColumnName('userId')} = ?;", self::TABLE_NAME);
         $rowset = $this->dbAdapter->prepareExecuteAndFetch($query, array($id, $userId));
 
         $following = null;
@@ -73,8 +73,8 @@ class FollowingTable
         $data = $following->getData();
         if ($id == 0) {
             $query = sprintf("
-                INSERT INTO `%s`
-                (`userId`, `followingName`, `followingId`)
+                INSERT INTO %s
+                ({$this->quoteColumnName('userId')}, {$this->quoteColumnName('followingName')}, {$this->quoteColumnName('followingId')})
                 VALUES (:user_id, :following_name, :following_id)", self::TABLE_NAME);
             $stmt = $this->dbAdapter->prepare($query);
             $stmt->bindValue(':user_id', $data['userId'], \PDO::PARAM_INT);
@@ -84,10 +84,10 @@ class FollowingTable
         } else {
             if ($this->getUserFollowing($id, $user_id)) {
                 $query = sprintf("
-                UPDATE `%s`
-                SET userId = :user_id,
-                    followingName = :following_name,
-                    followingId = :following_id
+                UPDATE %s
+                SET {$this->quoteColumnName('userId')} = :user_id,
+                    {$this->quoteColumnName('followingName')} = :following_name,
+                    {$this->quoteColumnName('followingId')} = :following_id
                 WHERE id = :id", self::TABLE_NAME);
                 $stmt = $this->dbAdapter->prepare($query);
                 $stmt->bindValue(':user_id', $data['userId'], \PDO::PARAM_INT);
@@ -105,12 +105,17 @@ class FollowingTable
     {
 
         $query = sprintf("
-                DELETE FROM `%s`
-                WHERE id = :id AND userId = :user_id", self::TABLE_NAME);
+                DELETE FROM %s
+                WHERE {$this->quoteColumnName('id')} = :id AND {$this->quoteColumnName('userId')} = :user_id", self::TABLE_NAME);
 
         $stmt = $this->dbAdapter->prepare($query);
         $stmt->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    protected function quoteColumnName($col_name)
+    {
+        return $this->dbAdapter->quoteColumnName($col_name);
     }
 }
