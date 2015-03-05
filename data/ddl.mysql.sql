@@ -11,3 +11,5 @@ CREATE TABLE following
     followingName VARCHAR(255) NOT NULL,
     followingId INTEGER NOT NULL
 );
+
+INSERT INTO users (username, password) VALUES ('admin', MD5('admin22'));
