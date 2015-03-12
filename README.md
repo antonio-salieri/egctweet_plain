@@ -1,7 +1,7 @@
 # egctweet_plain
 Tweet viewer (same as project https://github.com/antonio-salieri/egctwit) but without zend framework.
 
-This is simple ZF2 application which shows last five user tweets.
+This is simple application which shows last five user tweets.
 
 To install from composer type the following command:
 
